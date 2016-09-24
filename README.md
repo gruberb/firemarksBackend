@@ -24,12 +24,10 @@ $ glide install
 
 ### Run
 
-1. Run the go file in the root folder
+1. Run the go file in the root
 
 ```
 $ go run main.go
 ```
 
-2. Open a web browser and open the address:
-
-[http://localhost:1323](http://localhost:1323)
+2. Open a web browser and open the address: [http://localhost:1323](http://localhost:1323)
