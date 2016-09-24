@@ -1,0 +1,6 @@
+package: firemarksBackend
+import:
+- package: github.com/labstack/echo
+  version: ~2.0.2
+  subpackages:
+  - engine/standard
