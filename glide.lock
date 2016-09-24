@@ -1,5 +1,5 @@
-hash: 316fbbb27bd14b1c74e2a7463c1da65d8e5a07b8b0f5a1a58164e2f4d05a114f
-updated: 2016-09-24T16:22:23.224239677+02:00
+hash: a3a115545b9c1b22a7d4387ec8384037d69851a71110bc3b13510e6f3f296fc7
+updated: 2016-09-24T16:51:44.524764643+02:00
 imports:
 - name: github.com/labstack/echo
   version: fbcdf70c52c155ae9aa58e72ee0532fa2f1cad2e
@@ -26,4 +26,6 @@ imports:
   version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
   subpackages:
   - unix
+- name: gopkg.in/mgo.v2
+  version: 3f83fa5005286a7fe593b055f0d7771a7dce4655
 testImports: []
