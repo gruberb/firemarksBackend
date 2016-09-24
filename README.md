@@ -25,7 +25,6 @@ $ glide install
 ### Run
 
 1. Run the go file in the root
-
 ```
 $ go run main.go
 ```
