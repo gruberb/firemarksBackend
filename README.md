@@ -29,4 +29,4 @@ $ glide install
 $ go run main.go
 ```
 
-2) Open a web browser and open the address: [http://localhost:1323](http://localhost:1323)
+2) Open a web browser and open the address: [http://localhost:3000](http://localhost:3000)
