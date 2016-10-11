@@ -1,5 +1,6 @@
 package models
 
+
 import (
 	"time"
 	"gopkg.in/mgo.v2"
@@ -23,7 +24,14 @@ func (m *Link) Validate() (bool, []ValidationError) {
 	// Validate: Name
 	if len(m.Name) == 0 {
 		errors = append(errors, ValidationError{
-			"Name is missing",
+			"name", "Name is missing",
+		})
+	}
+
+	// Validate: Name
+	if len(m.Name) == 0 {
+		errors = append(errors, ValidationError{
+			"name", "Name is missing",
 		})
 	}
 
@@ -40,7 +48,54 @@ func NewLink() *Link {
 }
 
 
-// LinkCollection returns the collection for links
-func LinkCollection() *mgo.Collection {
+// Links ...
+func Links() *mgo.Collection {
 	return db.C("links")
+}
+
+
+// QueryLinks ...
+func QueryLinks(results *[]Link) error {
+	return Links().Find(nil).All(results)
+}
+
+
+// FindLink ...
+func FindLink(id string, link *Link) error {
+	objectID, err := stringToObjectID(id);
+  if err != nil {
+		return err
+	}
+
+	query := bson.M{"_id": objectID}
+	return Links().Find(query).One(link)
+}
+
+
+// CreateLink ...
+func CreateLink(newLink *Link) error {
+	return Links().Insert(newLink);
+}
+
+
+// UpdateLink ...
+func UpdateLink(id string, changes *Link) error {
+	objectID, err := stringToObjectID(id);
+  if err != nil {
+		return err
+	}
+
+	changeSet := bson.M{"$set": changes}
+	return Links().UpdateId(objectID, changeSet)
+}
+
+
+// DeleteLink ...
+func DeleteLink(id string) error {
+	objectID, err := stringToObjectID(id);
+  if err != nil {
+		return err
+	}
+
+	return Links().DeleteLink(objectID)
 }

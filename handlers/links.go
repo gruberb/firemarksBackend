@@ -1,8 +1,8 @@
 package handlers
 
+
 import (
 	"net/http"
-	// "fmt"
 	"github.com/labstack/echo"
 	"gopkg.in/mgo.v2/bson"
 	"firemarksBackend/models"
@@ -24,7 +24,9 @@ func list(c echo.Context) error {
 	results := &[]models.Link{}
 
 	// Find documents
-	models.LinkCollection().Find(nil).All(results)
+	if err := models.QueryLinks(results); err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
 
 	return c.JSON(http.StatusOK, results)
 }
@@ -33,11 +35,8 @@ func list(c echo.Context) error {
 // GET /links/:id
 func single(c echo.Context) error {
 	result := &models.Link{}
-
-	// Find document
-	query := bson.M{"_id": bson.ObjectIdHex(c.Param("id"))}
-	if err := models.LinkCollection().Find(query).One(result); err != nil {
-		c.NoContent(http.StatusNotFound)
+	if err := models.FindLink(c.Param("id"), result); err != nil {
+		return c.NoContent(http.StatusNotFound)
 	}
 
 	return c.JSON(http.StatusOK, result)
@@ -59,7 +58,7 @@ func create(c echo.Context) error {
 	}
 
 	// Create document
-	if err := models.LinkCollection().Insert(result); err != nil {
+	if err := models.CreateLink(result); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
@@ -69,22 +68,20 @@ func create(c echo.Context) error {
 
 // PUT /links/:id
 func update(c echo.Context) error {
-	result := new(models.Link)
+	changes := new(models.Link)
 
 	// Read params from context
-	if err := c.Bind(result); err != nil {
+	if err := c.Bind(changes); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 
 	// Validate model
-	if isValid, errors := result.Validate(); isValid != true {
+	if isValid, errors := changes.Validate(); isValid != true {
 		return c.JSON(http.StatusUnprocessableEntity, errors)
 	}
 
 	// Update document
-	id := bson.ObjectIdHex(c.Param("id"))
-	update := bson.M{"$set": result}
-	if err := models.LinkCollection().UpdateId(id, update); err != nil {
+	if err := model.UpdateLink(c.Param("id"), changes); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
@@ -95,8 +92,7 @@ func update(c echo.Context) error {
 // DELETE /links/:id
 func delete(c echo.Context) error {
 	// Delete document
-	id := bson.ObjectIdHex(c.Param("id"))
-	if err := models.LinkCollection().RemoveId(id); err != nil {
+	if err := models.DeleteLink(c.Param("id")); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
