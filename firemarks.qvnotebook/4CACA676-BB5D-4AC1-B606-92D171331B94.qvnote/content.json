@@ -1,0 +1,9 @@
+{
+  "title": "Models",
+  "cells": [
+    {
+      "type": "markdown",
+      "data": "# Url\n\nInternal use only, unique.\n\nfield | notes\n----- | -----\n_id | bson ID\naddress | text, no limit, any protocol\nhash | Unique MD5 hash based on the url\n\n\n# Link\n\nIs always private to each user.\n\nfield | notes\n----- | -----\n_id | bson ID\nurl_id | Reference to a Link\ntitle | Optional text to describe the link\nnote | Personal note about the link\ntags | List of tags as an array of strings\nis_fav | bool\n\n\n# Member\n\nfield | notes\n----- | -----\n_id | bson ID\nuser_id | bson ID\nrole | Role of the user: Reader, Collaborator, Owner\n\n\n# Collection\n\nIs public by default. Paid accounts can chose to make them private or invite others to view it.\n\nfield | notes\n----- | -----\n_id | bson ID\ntitle | Title of the collection\ndescription | Free text with markdown support\nlinks | Collection of CollectionLinks\nmembers | Collection of members\nis_public | bool\n\n\n\n"
+    }
+  ]
+}
