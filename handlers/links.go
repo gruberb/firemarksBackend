@@ -4,7 +4,6 @@ package handlers
 import (
 	"net/http"
 	"github.com/labstack/echo"
-	"gopkg.in/mgo.v2/bson"
 	"firemarksBackend/models"
 )
 
@@ -81,7 +80,7 @@ func update(c echo.Context) error {
 	}
 
 	// Update document
-	if err := model.UpdateLink(c.Param("id"), changes); err != nil {
+	if err := models.UpdateLink(c.Param("id"), changes); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}
 
