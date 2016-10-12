@@ -97,5 +97,5 @@ func DeleteLink(id string) error {
 		return err
 	}
 
-	return Links().DeleteLink(objectID)
+	return Links().RemoveId(objectID)
 }
