@@ -1,12 +1,13 @@
 package main
 
 import (
+	"firemarksBackend/handlers"
+	"firemarksBackend/models"
 	"fmt"
 	"net/http"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
-	"firemarksBackend/models"
-	"firemarksBackend/handlers"
 )
 
 type (
@@ -19,12 +20,10 @@ type (
 	MountHandler func(e *echo.Group)
 )
 
-
 // Mounts a MountHandler at a path for a given MountableResource
 func mount(e MountableResource, path string, handler MountHandler) {
 	handler(e.Group(path))
 }
-
 
 func main() {
 	// Setup a global instance of the DB connection
@@ -40,10 +39,11 @@ func main() {
 	// API Routes
 	api := e.Group("/api")
 	v1 := api.Group("/v1")
-	v1.GET("", func (c echo.Context) error {
+	v1.GET("", func(c echo.Context) error {
 		return c.NoContent(http.StatusOK)
 	})
 	mount(v1, "/links", handlers.LinksMountHandler)
+	mount(v1, "/users", handlers.UsersMountHandler)
 
 	// Server stuff
 	fmt.Println("\n== Running on http://localhost:3000 ==")
