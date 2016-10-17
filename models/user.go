@@ -11,10 +11,10 @@ import (
 // User model
 type User struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Name      string        `json:"name"`
-	EMail     string        `json:"email"`
-	Password  string        `json:"-"`
-	CreatedAt time.Time     `json:"created_at,omitempty" bson:",omitempty"`
+	Name      string        `form:"name" json:"name"`
+	EMail     string        `form:"email" json:"email"`
+	Password  string        `form:"password" json:"-"`
+	CreatedAt time.Time     `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }
 
 // NewUser creates a new User with ID and CreatedAt
@@ -30,12 +30,11 @@ func Users() *mgo.Collection {
 	return db.C("users")
 }
 
-func (u *User) cryptPassword(p []byte) error {
-	var error error
-	var hash []byte
-
-	if hash, error = bcrypt.GenerateFromPassword(p, bcrypt.DefaultCost); error != nil {
-		return error
+func (u *User) cryptPassword(p string) error {
+	// TODO: Add secret salt to password to make it more robust
+	hash, err := bcrypt.GenerateFromPassword([]byte(p), bcrypt.DefaultCost)
+	if err != nil {
+		return err
 	}
 
 	u.Password = string(hash[:])
@@ -54,6 +53,7 @@ func (u *User) Validate() (bool, []ValidationError) {
 	}
 
 	// TODO Add valid regex or better way of validating emails
+	// TODO Make email unique so that no other user can use the same email (on creation only)
 	if len(u.EMail) == 0 {
 		errors = append(errors, ValidationError{
 			"email", "E-Mail is missing",
@@ -69,8 +69,16 @@ func (u *User) Validate() (bool, []ValidationError) {
 	return (len(errors) == 0), errors
 }
 
+// QueryUsers ...
+func QueryUsers(results *[]User) error {
+	return Users().Find(nil).All(results)
+}
+
 // CreateUser ...
 func CreateUser(newUser *User) error {
-	newUser.cryptPassword([]byte(newUser.Password))
+	if err := newUser.cryptPassword(newUser.Password); err != nil {
+		return err
+	}
+
 	return Users().Insert(newUser)
 }

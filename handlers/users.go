@@ -9,9 +9,23 @@ import (
 
 // UsersMountHandler sets the routes for the User resource
 func UsersMountHandler(base *echo.Group) {
+	base.GET("", listUsers)
 	base.POST("", createUser)
 }
 
+// GET /users
+func listUsers(c echo.Context) error {
+	results := &[]models.User{}
+
+	// Find documents
+	if err := models.QueryUsers(results); err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	return c.JSON(http.StatusOK, results)
+}
+
+// POST /users
 func createUser(c echo.Context) error {
 	result := models.NewUser()
 

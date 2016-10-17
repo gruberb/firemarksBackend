@@ -10,9 +10,9 @@ import (
 // Link model
 type Link struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	URL       string        `json:"url"`
-	Name      string        `json:"name"`
-	CreatedAt time.Time     `json:"created_at,omitempty" bson:",omitempty"`
+	URL       string        `form:"url" json:"url"`
+	Name      string        `form:"name" json:"name"`
+	CreatedAt time.Time     `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }
 
 // NewLink creates a new Link with ID and CreatedAt

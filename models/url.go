@@ -8,12 +8,12 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// URL ...
+// URL model
 type URL struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Address   string        `json:"address"`
 	Hash      string        `json:"hash"`
-	CreatedAt time.Time     `json:"created_at,omitempty" bson:",omitempty"`
+	CreatedAt time.Time     `json:"created_at,omitempty" bson:"created_at,omitempty"`
 }
 
 // NewURL ...
