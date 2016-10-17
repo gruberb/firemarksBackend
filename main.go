@@ -1,13 +1,14 @@
 package main
 
 import (
-	"firemarksBackend/handlers"
-	"firemarksBackend/models"
 	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
+
+	"firemarksBackend/handlers"
+	"firemarksBackend/models"
 )
 
 type (

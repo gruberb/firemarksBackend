@@ -1,12 +1,13 @@
 package handlers
 
 import (
-	"net/http"
-	"github.com/labstack/echo"
 	"firemarksBackend/models"
+	"net/http"
+
+	"github.com/labstack/echo"
 )
 
-// LinksMountHandler sets the routes for /links
+// LinksMountHandler sets the routes for the Link resource
 func LinksMountHandler(base *echo.Group) {
 	base.GET("", listLinks)
 	base.POST("", createLink)

@@ -1,10 +1,13 @@
 package handlers
 
 import (
-	"github.com/labstack/echo"
 	"firemarksBackend/models"
+	"net/http"
+
+	"github.com/labstack/echo"
 )
 
+// UsersMountHandler sets the routes for the User resource
 func UsersMountHandler(base *echo.Group) {
 	base.POST("", createUser)
 }

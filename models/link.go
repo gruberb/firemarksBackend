@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -12,6 +13,19 @@ type Link struct {
 	URL       string        `json:"url"`
 	Name      string        `json:"name"`
 	CreatedAt time.Time     `json:"created_at,omitempty" bson:",omitempty"`
+}
+
+// NewLink creates a new Link with ID and CreatedAt
+func NewLink() *Link {
+	return &Link{
+		ID:        bson.NewObjectId(),
+		CreatedAt: bson.Now(),
+	}
+}
+
+// Links collection
+func Links() *mgo.Collection {
+	return db.C("links")
 }
 
 // Validate run validations for the model
@@ -33,19 +47,6 @@ func (m *Link) Validate() (bool, []ValidationError) {
 	}
 
 	return (len(errors) == 0), errors
-}
-
-// NewLink creates a new Link with ID and CreatedAt
-func NewLink() *Link {
-	return &Link{
-		ID:        bson.NewObjectId(),
-		CreatedAt: bson.Now(),
-	}
-}
-
-// Links ...
-func Links() *mgo.Collection {
-	return db.C("links")
 }
 
 // QueryLinks ...
