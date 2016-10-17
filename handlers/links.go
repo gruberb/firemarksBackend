@@ -1,25 +1,22 @@
 package handlers
 
-
 import (
 	"net/http"
 	"github.com/labstack/echo"
 	"firemarksBackend/models"
 )
 
-
 // LinksMountHandler sets the routes for /links
 func LinksMountHandler(base *echo.Group) {
-	base.GET("", list)
-	base.POST("", create)
-	base.GET("/:id", single)
-	base.PUT("/:id", update)
-	base.DELETE("/:id", delete)
+	base.GET("", listLinks)
+	base.POST("", createLink)
+	base.GET("/:id", getLink)
+	base.PUT("/:id", updateLink)
+	base.DELETE("/:id", deleteLink)
 }
 
-
 // GET /links
-func list(c echo.Context) error {
+func listLinks(c echo.Context) error {
 	results := &[]models.Link{}
 
 	// Find documents
@@ -30,9 +27,8 @@ func list(c echo.Context) error {
 	return c.JSON(http.StatusOK, results)
 }
 
-
 // GET /links/:id
-func single(c echo.Context) error {
+func getLink(c echo.Context) error {
 	result := &models.Link{}
 	if err := models.FindLink(c.Param("id"), result); err != nil {
 		return c.NoContent(http.StatusNotFound)
@@ -41,9 +37,8 @@ func single(c echo.Context) error {
 	return c.JSON(http.StatusOK, result)
 }
 
-
 // POST /links
-func create(c echo.Context) error {
+func createLink(c echo.Context) error {
 	result := models.NewLink()
 
 	// Read params from context
@@ -64,9 +59,8 @@ func create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-
 // PUT /links/:id
-func update(c echo.Context) error {
+func updateLink(c echo.Context) error {
 	changes := new(models.Link)
 
 	// Read params from context
@@ -87,9 +81,8 @@ func update(c echo.Context) error {
 	return c.NoContent(http.StatusNoContent)
 }
 
-
 // DELETE /links/:id
-func delete(c echo.Context) error {
+func deleteLink(c echo.Context) error {
 	// Delete document
 	if err := models.DeleteLink(c.Param("id")); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)

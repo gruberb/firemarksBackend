@@ -1,6 +1,5 @@
 package models
 
-
 import (
 	"crypto/md5"
 	"encoding/hex"
@@ -8,24 +7,21 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-
 // URL ...
 type URL struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Address   string `json:"address"`
-	Hash      string `json:"hash"`
-	CreatedAt time.Time `json:"created_at,omitempty" bson:",omitempty"`
+	Address   string        `json:"address"`
+	Hash      string        `json:"hash"`
+	CreatedAt time.Time     `json:"created_at,omitempty" bson:",omitempty"`
 }
 
-
 // NewURL ...
-func NewURL() *Url {
-	return &Url{
+func NewURL() *URL {
+	return &URL{
 		ID:        bson.NewObjectId(),
 		CreatedAt: bson.Now(),
 	}
 }
-
 
 // CreateURLHash ...
 func CreateURLHash(a string) string {
