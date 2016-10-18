@@ -16,7 +16,7 @@ func UsersMountHandler(base *echo.Group) {
 func listUsers(c echo.Context) error {
 	results := &[]models.User{}
 
-	// Find documents
+	// Find Users
 	if err := models.QueryUsers(results); err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}

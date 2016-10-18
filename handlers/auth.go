@@ -14,7 +14,7 @@ func AuthMountHandler(base *echo.Group) {
 	base.POST("/register", register)
 }
 
-// GET /links
+// POST/ on login route
 func authUser(c echo.Context) error {
 	user := &models.User{}
 	credentials := &models.User{}
@@ -23,7 +23,7 @@ func authUser(c echo.Context) error {
 	if err := c.Bind(credentials); err != nil {
 		return err
 	}
-	// Find documents
+	// Find one User by provided E-Mail
 	if err := models.FindUser(credentials.EMail, user); err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
@@ -47,22 +47,22 @@ func authUser(c echo.Context) error {
 	return c.JSON(http.StatusOK, result)
 }
 
-// POST /users
+// POST/ on register route
 func register(c echo.Context) error {
 	newUser := models.NewUser()
 	result := &models.PublicUser{}
 
-	// Read params from context
+	// Bind the context to fill the user model
 	if err := c.Bind(newUser); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest)
 	}
 
-	// Validate model
+	// Validate User
 	if isValid, errors := newUser.Validate(); isValid != true {
 		return c.JSON(http.StatusUnprocessableEntity, errors)
 	}
 
-	// Create document
+	// Create the new User
 	if err := models.CreateUser(newUser); err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError)
 	}

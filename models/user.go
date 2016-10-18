@@ -81,7 +81,7 @@ func QueryUsers(results *[]User) error {
 	return Users().Find(nil).All(results)
 }
 
-// FindLink ...
+// Find One User by E-Mail
 func FindUser(email string, user *User) error {
 	query := bson.M{"email": email}
 	return Users().Find(query).One(user)
