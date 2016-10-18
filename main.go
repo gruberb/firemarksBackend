@@ -45,6 +45,7 @@ func main() {
 	})
 	mount(v1, "/links", handlers.LinksMountHandler)
 	mount(v1, "/users", handlers.UsersMountHandler)
+	mount(v1, "", handlers.AuthMountHandler)
 
 	// Server stuff
 	fmt.Println("\n== Running on http://localhost:3000 ==")
