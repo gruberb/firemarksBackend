@@ -11,10 +11,17 @@ import (
 // User model
 type User struct {
 	ID        bson.ObjectId `json:"id" bson:"_id,omitempty"`
-	Name      string        `form:"name" json:"name"`
-	EMail     string        `form:"email" json:"email"`
-	Password  string        `form:"password" json:"-"`
+	Name      string        `json:"name"`
+	EMail     string        `json:"email"`
+	Password  string        `form:"password"`
 	CreatedAt time.Time     `json:"created_at,omitempty" bson:"created_at,omitempty"`
+}
+
+type PublicUser struct {
+	ID    bson.ObjectId `json:"id" bson:"_id,omitempty"`
+	Name  string        `json:"name"`
+	EMail string        `json:"email"`
+	Token string        `json:"token"`
 }
 
 // NewUser creates a new User with ID and CreatedAt
@@ -72,6 +79,12 @@ func (u *User) Validate() (bool, []ValidationError) {
 // QueryUsers ...
 func QueryUsers(results *[]User) error {
 	return Users().Find(nil).All(results)
+}
+
+// Find One User by E-Mail
+func FindUser(email string, user *User) error {
+	query := bson.M{"email": email}
+	return Users().Find(query).One(user)
 }
 
 // CreateUser ...
